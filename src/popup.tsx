@@ -18,7 +18,7 @@ const List = styled.ul`
 
 const Button = styled.button`
   align-self: flex-end;
-  background-color: #FF8080;
+  background-color: #1EB8D9;
   color: #fff;
   border: none;
   padding: 10px 20px;
