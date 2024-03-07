@@ -1,29 +1,34 @@
-# JobCan Chrome Extension
+# Jobcan Chrome Extension
 
-![build](https://github.com/chibat/chrome-extension-typescript-starter/workflows/build/badge.svg)
+このChrome拡張機能は、ジョブカン勤怠システムでの稼働時間を計算し、ポップアップで表示します。
 
-Chrome Extension, TypeScript and Visual Studio Code
+## 機能
+
+- 稼働合計時間の表示
+- 平均稼働時間の表示
+- 残りの稼働時間/日の表示
+- 残りの稼働日の表示
+
+## 使い方
+
+1. このリポジトリをクローンするか、ZIPファイルとしてダウンロードしてください。
+2. Google Chromeブラウザで `chrome://extensions/` を開きます。
+3. 右上の「デベロッパーモード」を有効にします。
+4. 「パッケージされていない拡張機能を読み込む」をクリックし、ダウンロードしたフォルダのdist配下を選択します。
+5. Chromeのツールバーにアイコンが追加されます。アイコンをクリックして拡張機能を起動します。
+6. ポップアップで「稼働時間を計算」ボタンをクリックします。
+![img.png](img.png)
+
 
 ## Prerequisites
 
 * [node + npm](https://nodejs.org/) (Current Version)
-
-## Option
-
-* [Visual Studio Code](https://code.visualstudio.com/)
 
 ## Includes the following
 
 * TypeScript
 * Webpack
 * React
-* Jest
-* Example Code
-    * Chrome Storage
-    * Options Version 2
-    * content script
-    * count up badge number
-    * background
 
 ## Project Structure
 
@@ -38,9 +43,6 @@ Chrome Extension, TypeScript and Visual Studio Code
 npm install
 ```
 
-## Import as Visual Studio Code project
-
-...
 
 ## Build
 
@@ -66,5 +68,7 @@ type `Ctrl + Shift + B`
 
 Load `dist` directory
 
-## Test
-`npx jest` or `npm run test`
+## Reference
+https://github.com/chibat/chrome-extension-typescript-starter
+
+
