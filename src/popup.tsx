@@ -38,6 +38,7 @@ const Comment = styled.p`
 
 const Popup = () => {
   const [totalWorkTime, setTotalWorkTime] = useState(0);
+  const [paidLeaveTime, setPaidLeaveTime] = useState(0);
   const [workTime, setWorkTime] = useState(0);
   const [restWorkTime, setRestWorkTime] = useState(0);
   const [restWorkDays, setRestWorkDays] = useState(0);
@@ -59,13 +60,18 @@ const Popup = () => {
                 const [hour1, minutes2] = response['monthProvisionWorkingHours'].split(':');
                 const provisionWorking = parseFloat(`${hour1}.${minutes2}`);
                 const [hour2, minutes3] = response['paidLeaveHours'].split(':');
-                const totalWorking = actualWorking + parseFloat(`${hour2}.${minutes3}`);
+                const paidLeaveHours = parseFloat(`${hour2}.${minutes3}`);
+                const totalWorking = actualWorking;
                 const workingDays = parseFloat(response['workingDays']) + parseFloat(response['paidLeaveDays']);
 
                 // 稼働中でない場合
                 if (todayActualWorking === 0) {
+                    // 稼働合計時間
                     setTotalWorkTime(totalWorking);
-                    setWorkTime(totalWorking / workingDays);
+                    // 有給取得時間
+                    setPaidLeaveTime(paidLeaveHours);
+                    // 平均稼働時間
+                    setWorkTime((totalWorking + paidLeaveHours) / workingDays);
                     const remainDays = response['scheduledWorkingDays'].replace('日', '') - workingDays;
                     if (remainDays === 0) {
                         setRestWorkDays(0);
@@ -73,16 +79,23 @@ const Popup = () => {
                         return;
                     }
                     setRestWorkDays(remainDays);
-                    setRestWorkTime((provisionWorking - todayActualWorking) / remainDays);
+                    setRestWorkTime((provisionWorking - (totalWorking + paidLeaveHours)) / remainDays);
                     return;
                 }
 
                 const beforeProvisionWorking = totalWorking - todayActualWorking;
-                setWorkTime(beforeProvisionWorking / (workingDays - 1));
-                const remainDays = response['scheduledWorkingDays'].replace('日', '') - (response['workingDays'] - 1)
+                // 稼働合計時間
                 setTotalWorkTime(beforeProvisionWorking);
+                // 有給取得時間
+                setPaidLeaveTime(paidLeaveHours);
+                // 平均稼働時間
+                setWorkTime((beforeProvisionWorking + paidLeaveHours) / (workingDays - 1));
+                // 残りの稼働時間/日
+                const remainDays = response['scheduledWorkingDays'].replace('日', '') - (workingDays - 1);
+                setRestWorkTime((provisionWorking - (beforeProvisionWorking + paidLeaveHours)) / remainDays);
+                // 残りの稼働日
                 setRestWorkDays(remainDays);
-                setRestWorkTime((provisionWorking - beforeProvisionWorking) / remainDays);
+
             }
         );
       }
@@ -93,6 +106,7 @@ const Popup = () => {
       <Container>
           <List>
               <ListItem>稼働合計時間：{totalWorkTime}</ListItem>
+              <ListItem>有給取得時間：{paidLeaveTime}</ListItem>
               <ListItem>平均稼働時間：{workTime}</ListItem>
               <ListItem>残りの稼働時間/日：{restWorkTime}</ListItem>
               <ListItem>残りの稼働日：{restWorkDays}</ListItem>
